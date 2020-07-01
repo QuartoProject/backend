@@ -28,7 +28,7 @@ deploy:
     skip-cleanup: true
     keep-history: true
     api_key: 
-        secure: ""
+        secure: "jaNqWTWj10YcNlBmg/MmiIB5nvjr7Bn81nn3ONZfTWNOui/oDkHP1wRanU8vSsh2ofjYPGnjxDfyiYbDBjGt0npZdpNFoNPSKoj4amdYaxErLmV7Q+FUj7vbMGw8mNSbz1zrlx3kb7kdsbGCKqkHtEBqUJLLD+3il2abIuqFs5ORbOLYoW11MUZ+BZAIDWKoJLRfle0S+D/CsxicVWZz90mQF8p8jad/0qwsOM1EKDHJXC5UoWvOScpPXGBOpxRcXtUDfL9VphytNcR1eajWJKHyAH6IK54oS9NE6NECUKpp0vt/tk9U7767oP+lOlP/fbjG5/ReMe2Q18XAXv1vayLWccNA/6704G/veS6An3FLOTS+X+slaUG1N207DQqHsI1H+bninkCyPtvnJpTwUb6N3U+DV5y6OeOTy0NMWYIyujsiUIbu1i1eo91YRcTUWC1MlJE2HPn+q5u7iW4lE+8+n3TEMO3XtH4L/z2Zyt5g85iwU1tyDXg9UbZGczM2EoKYmqpO3dbL4Zx7CDpmtqGmXkWaIG6SAA+hWDbmiowqTctnZPVSfiYe+y5IDK8daKtWCNT92kD36s+4CJK4VRb4Eo/muMBFsFbUyaZ1vZFk+SYTDpAOFoqMe49kI0zh+0rWJF9Jpi4tjuIs5NhQWI+Vtw9xhMpedCrLN35Vv7o="
 
     app: quarto-backend
     on:
