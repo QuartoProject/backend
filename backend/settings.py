@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'quarto',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,6 +106,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.linkedin.LinkedinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -124,3 +134,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY	=	'748184686010374'	# Facebook App	ID
+SOCIAL_AUTH_FACEBOOK_SECRET	=	'9f55b23416b16838301dc1ba13046191'	# Facebook App Secret
+
+SOCIAL_AUTH_GITHUB_KEY = 'f9ef628650ce4acb3a76'     # github id     
+SOCIAL_AUTH_GITHUB_SECRET = '2bf1197e41d69620789698a341bf32444a47375c'  # github secret key
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '86mzx5nwvc5cf6'    #Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = '64DlDDbZPsoLW1Qj'  #Client Secret
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
