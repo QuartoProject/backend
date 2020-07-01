@@ -30,6 +30,6 @@ deploy:
     api_key: 
         secure: ""
 
-    app: #chart-covid
+    app: quarto-backend
     on:
-      repo: #Chart-Covid/backend
+      repo: QuartoProject/backend
