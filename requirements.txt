@@ -1,6 +1,6 @@
 django>=3.0.7
 gunicorn
-#djangorestframework
+djangorestframework
 django-cors-headers
 pillow
 social-auth-core
