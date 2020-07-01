@@ -1,0 +1,8 @@
+django>=3.0.7
+gunicorn
+#djangorestframework
+django-cors-headers
+pillow
+social-auth-core
+social-auth-app-django
+requests-oauthlib
