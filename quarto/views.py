@@ -1,128 +1,131 @@
-from django.shortcuts import render
-
+from rest_framework.decorators import api_view
 from .models import User, Room
-from django.http import HttpResponse
-import json
-
-def inicio(request):
-    return render(request,'index.html')
-
-
-def return_users(request):
-
-    users = User.objects.all()
-
-    print(users[0])
-
-    data = []
-
-    for user in users:
-        context ={
-            'id': user.id,
-            'name': user.name,
-            'lastname': user.lastname,
-            'email': user.email,
-            'phone': user.phone,
-            'anfitrion': user.anfitrion,
-        }
-        data.append(context)
-
-    return HttpResponse(json.dumps(data))
+from .serializers import UserSerializer, RoomSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework import viewsets
 
 
-def return_rooms(request):
-    rooms = Room.objects.all()
-
-    #print(rooms)
-
-    data=[]
-
-    for room in rooms:
-        aux = {
-            'id': room.id,  
-            'created': str(room.created_date),
-            'id_user': {
-                'name': room.id_user.name,
-                'last_name': room.id_user.lastname,
-                'phone': room.id_user.phone,
-                'email': room.id_user.email,
-            },
-            'picture': str(room.picture),
-            'price': room.price,
-            'nearest_places': room.nearest_places,
-            'mts2': room.mts2,
-            'furniture': room.furniture,
-            'private_bath': room.private_bath,
-            'wifi': room.wifi,
-            'closet': room.closet,
-            'kitchen': room.kitchen,
-            'pet': room.pet,
-            'washing_machine': room.washing_machine,
-            'furnished': room.furnish,
-            'tv': room.tv,
-            'smoke': room.smoke,
-            'couple': room.couple,
-            'family_atmosphere': room.family_atmosphere,
-            'description': room.description,
-            'available': room.available,
-        }
-        
-        data.append(aux)
-
-    return HttpResponse(json.dumps(data))
+"""
+To have access to the functions below, we just need the serializer_class and queryset
+"""
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
 
-def edit_user(request,id, anfi):
-    
-    user = User.objects.get(id = id)
-    print(user)
-    user.anfitrion = anfi
-    user.save()
-    print(user)
-    
-    data = {
-        'name' : user.name,
-        'lastname': user.lastname,
-        'email': user.email,
-        'anfitrion' : user.anfitrion,
-    }
-
-    return HttpResponse(json.dumps(data))
-
-def signup(request,nombre,apellido,passwd,email,lugar,anfi,desc,tel):
-    try:
-        u = User(name=nombre,lastname=apellido,password=passwd,
-                email=email,location=lugar,anfitrion=anfi,description=desc,phone=tel)
-        u.save()
-        print(u.id)
-        data={
-            'status':'ok',
-            'nombre': nombre,
-            'apellido': apellido,
-            'email':email,
-            'message': 'El usuario se creo correctamente'
-        }
-    except Exception as e:
-        print(e)
-        oa ={'status':'faile','message':'Email no valido', 'error':str(e)}
-        return HttpResponse(json.dumps(oa))
-    print(data)
-    return HttpResponse(json.dumps(data))
+"""
+UserApiView class allows us to see a user´s list
+"""
+class UserAPIView(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
 
-def create_room(request, iu, price,ne_pl,mts2,furn,pri_bath,wifi,
-                closet,kitchen,pet,w_m,furnished,tv,smoke,couple,family,desc):
-    
-    user = User.objects.get(id=iu)
-    try:
-        r = Room(id_user=user,price=price,nearest_places=ne_pl,mts2=mts2,
-                furniture=furn,private_bath=pri_bath,wifi=wifi,closet=closet,
-                kitchen=kitchen,pet=pet,washing_machine=w_m,furnish=furnished,
-                tv=tv,smoke=smoke,couple=couple,family_atmosphere=family,description=desc)
-        r.save()
-    except Exception as e:
-        print(e)
-        return HttpResponse(json.dumps(str(e)))
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
 
-    return HttpResponse("Romm creado")
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+"""
+UserDetail class allows us to see details from a user
+We can get, put and delete a user
+"""
+class UserDetail(APIView):
+    def get_object(self, id):
+        try:
+            return User.objects.get(id=id)
+
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+    def get(self, request, id):
+        user = self.get_object(id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+
+    def put(self, request, id):
+        user = self.get_object(id)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, id):
+        user = self.get_object(id)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+"""
+RoomViewSet brings the complete list.
+"""
+
+class RoomViewSet(viewsets.ModelViewSet):
+    serializer_class = RoomSerializer
+    queryset = Room.objects.all()
+
+
+"""
+RoomApiView class allows us to see a room´s list
+"""
+class RoomAPIView(APIView):
+    def get(self, request):
+        rooms = Room.objects.all()
+        serializer = RoomSerializer(rooms, many=True)
+        return Response(serializer.data)
+
+
+    def post(self, request):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
+RoomDetail allows us to see details from a room
+We can get, put and delete a room
+"""
+class RoomDetail(APIView):
+    def get_object(self, id):
+        try:
+            return Room.objects.get(id=id)
+
+        except Room.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+    def get(self, request, id):
+        room = self.get_object(id)
+        serializer = RoomSerializer(room)
+        return Response(serializer.data)
+
+
+    def put(self, request, id):
+        room = self.get_object(id)
+        serializer = RoomSerializer(room, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, id):
+        room = self.get_object(id)
+        room.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

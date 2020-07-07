@@ -1,21 +1,23 @@
 from django.db import models
 
+
 class User(models.Model):
     id = models.AutoField(primary_key = True)
     name= models.CharField(max_length=100, blank=False, default='Jhon')
     lastname = models.CharField(max_length=120, blank=False,default='Doe')
     password = models.CharField(max_length=20, blank=False,default='0000')
     email = models.EmailField(max_length=200, unique=True)
-    anfitrion = models.BooleanField(default=False)
+    host = models.BooleanField(default=False)
     location = models.CharField(max_length=120, blank=False, default='bogota')
     description = models.TextField(blank=True)
     phone = models.PositiveIntegerField(blank=True, default=1112223344)
     active = models.BooleanField(default=True)
     favorites = models.TextField(blank=True)
-    picture = models.ImageField('profile picture', upload_to='users/pitures/',default='/media/rooms/pictures/user_profile.png',blank=True,null=True)
+    picture = models.ImageField('profile picture', upload_to='users/pictures/',default='/media/rooms/pictures/user_profile.png',blank=True,null=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{_id} {_name} {_lastname} active: {_active} email: {_email}'.format(
+        return '{_id} {_name} {_lastname}'.format(
             _id=self.id,
             _name=self.name,
             _lastname=self.lastname,
@@ -38,7 +40,7 @@ class Room(models.Model):
     kitchen = models.BooleanField(default=False)
     pet = models.BooleanField(default=False)
     washing_machine = models.BooleanField(default=False)
-    furnish = models.BooleanField(default=False)
+    furnished = models.BooleanField(default=False)
     tv = models.BooleanField(default=False)
     smoke = models.BooleanField(default=False)
     couple = models.BooleanField(default=False)
@@ -46,6 +48,7 @@ class Room(models.Model):
     description = models.TextField(blank=True)
     available = models.BooleanField(default=True)
     picture = models.ImageField('room pictures',upload_to='media/rooms/pictures',default='/media/rooms/pictures/photo.png',blank=True,null=True)
+    
 
     def __str__(self):
         return 'id: {_id} id_user: {_id_user} available: {_available}'.format(
@@ -53,3 +56,7 @@ class Room(models.Model):
             _id_user = self.id_user,
             _available = self.available,
         )
+
+
+
+
