@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'knox',
     'registration',
+    'api',
+    'todos',
 ]
 
 REST_FRAMEWORK = {
@@ -64,17 +66,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
 
-    # 'DEFAULT_PERMISSION_CLASSES' : (
-    #     'rest_framework.permissions.IsAuthenticated',),
-
-    
-    
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication','knox.auth.TokenAuthentication',
-    ),
-
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',]
 }
 
 
@@ -119,8 +112,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dhgfp87b83uqp',
         'USER': 'pngiymlbagoudn',
