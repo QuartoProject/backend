@@ -66,18 +66,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
 
-    # 'DEFAULT_PERMISSION_CLASSES' : (
-    #     'rest_framework.permissions.AllowAny'),
-    #     'rest_framework.permissions.IsAuthenticated',),
-
-    
-    
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication','knox.auth.TokenAuthentication',
-    ),
-
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',]
 }
 
 
@@ -124,6 +114,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       # 'NAME': 'dhgfp87b83uqp',
+       # 'USER': 'pngiymlbagoudn',
+       # 'PASSWORD': 'aaf24acf27219fd6cc98112dc4758f295ac5e46485c0070afb9b7fd23439ed72',
+       # 'HOST': 'ec2-34-224-229-81.compute-1.amazonaws.com',
+       # 'PORT': '5432',
     }
 }
 
