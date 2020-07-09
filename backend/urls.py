@@ -10,10 +10,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('registration.urls')),
     
-    
+    path('api/v1/', include('api.urls')),
     path('', include('quarto.urls')),
+]
 
     # path('api/token/', TokenObtainPairView.as_view()),
     # path('api/token/refresh/', TokenRefreshView.as_view()),
-]
+
 

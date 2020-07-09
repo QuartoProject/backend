@@ -1,9 +1,10 @@
 from django.db import models
 class User(models.Model):
     id = models.AutoField(primary_key = True)
-    name= models.CharField(max_length=100, blank=False, default='Jhon')
-    lastname = models.CharField(max_length=120, blank=False,default='Doe')
-    password = models.CharField(max_length=20, blank=False,default='0000')
+    lastname = models.CharField(max_length=120, blank=False)
+    name= models.CharField(max_length=100, blank=False)
+    username = models.CharField(max_length=100, blank=False)
+    password = models.CharField(max_length=20, blank=False)
     email = models.EmailField(max_length=200, unique=True)
     anfitrion = models.BooleanField(default=False)
     location = models.CharField(max_length=120, blank=False, default='bogota')
