@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from .models import User, Room
+from quarto.models import User, Room
 from .serializers import UserSerializer, RoomSerializer
 from rest_framework.response import Response
 from rest_framework import status

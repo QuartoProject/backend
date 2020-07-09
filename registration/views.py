@@ -1,14 +1,13 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
-from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer
 from django.contrib.auth import login
-from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 from quarto.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from knox.models import AuthToken
 """
 Register API
 """
@@ -20,7 +19,8 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context()).data})
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": AuthToken.objects.create(user)[1]})
 
 
 

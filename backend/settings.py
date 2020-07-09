@@ -57,8 +57,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'knox',
     'registration',
-    'api',
-    'todos',
 ]
 
 REST_FRAMEWORK = {
@@ -67,7 +65,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'knox.auth.TokenAuthentication',]
+        'knox.auth.TokenAuthentication',
+    ]
 }
 
 
@@ -112,14 +111,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dhgfp87b83uqp',
-        'USER': 'pngiymlbagoudn',
-        'PASSWORD': 'aaf24acf27219fd6cc98112dc4758f295ac5e46485c0070afb9b7fd23439ed72',
-        'HOST': 'ec2-34-224-229-81.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #'NAME': 'dhgfp87b83uqp',
+        #'USER': 'pngiymlbagoudn',
+        #'PASSWORD': 'aaf24acf27219fd6cc98112dc4758f295ac5e46485c0070afb9b7fd23439ed72',
+        #'HOST': 'ec2-34-224-229-81.compute-1.amazonaws.com',
+        #'PORT': '5432',
     }
 }
 
