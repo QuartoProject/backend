@@ -10,7 +10,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('registration.urls')),
     
-    path('api/v1/', include('api.urls')),
     path('', include('quarto.urls')),
 ]
 

@@ -53,7 +53,6 @@ class Room(models.Model):
         )
 class Images_Room(models.Model):
     id = models.AutoField(primary_key = True)
-    #id_room = models.ForeignKey('Room', on_delete=models.CASCADE)
     image_1 = models.URLField(blank=False)
     image_2 = models.URLField(blank=False)
     image_3 = models.URLField(blank=True)
@@ -62,11 +61,6 @@ class Images_Room(models.Model):
     image_6 = models.URLField(blank=True)
     image_7 = models.URLField(blank=True)
     image_8 = models.URLField(blank=True)
-    # def __str__(self):
-    #     return 'id: {_id} id_room: {_id_room}'.format(
-    #         _id = self.id,
-    #         _id_user = self.id_room,
-    #     )
     def __str__(self):
         return 'id: {_id}'.format(
             _id = self.id,
