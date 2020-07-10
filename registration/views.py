@@ -9,6 +9,7 @@ from knox.views import LoginView as KnoxLoginView
 from quarto.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+
 """
 Register API
 """
@@ -20,7 +21,7 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context()).data})
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,"token": AuthToken.objects.create(user)[1]})
 
 
 
