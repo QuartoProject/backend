@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UserAPIView, UserDetail, UserViewSet, RoomAPIView, RoomDetail, RoomViewSet
+from .views import UserAPIView, UserDetail, UserViewSet, RoomAPIView, RoomDetail, RoomViewSet, FavoritesDetail
 from rest_framework.routers import DefaultRouter
 
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('user_detail/<int:id>/', UserDetail.as_view()),
     path('room_detail/<int:id>/', RoomDetail.as_view()),
 
+    # Favorites 
+    path('favorites/<int:id>/', FavoritesDetail.as_view()),
 ]
 
 
