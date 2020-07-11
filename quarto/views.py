@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from .models import User, Room
+from .models import User, Room , Favorites
 from .serializers import UserSerializer, RoomSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -134,52 +134,54 @@ class RoomDetail(APIView):
 """
 Favorites
 """
-def return_favorites(request, id):
-    favorites = Favorites.objects.all()
-    print(favorites[0])
-    favorites = favorites.filter(id_user=id)
-    print(favorites)   
-    print('Existe favoritos : {exists}'.format(exists=favorites.exists()))
-    if(favorites.exists() == False):
-        error = {
-            'status': 204,
-            'message': 'El usuario no tiene favoritos.'
-        }
-        return Response(error)
-    data = []
-    for favorite in favorites:
-        aux = {
-            #'oa': str(favorite)
-            'id': favorite.id_room.id,  
-            'created': str(favorite.id_room.created_date),
-            'id_user': {
-                'name': favorite.id_room.id_user.name,
-                'last_name': favorite.id_room.id_user.lastname,
-                'phone': favorite.id_room.id_user.phone,
-                'email': favorite.id_room.id_user.email,
-            },
-            #'picture': str(favorite.id_room.picture),
-            'pictures': {
-                'image_1': favorite.id_room.id_images.image_1,
-                'image_2': favorite.id_room.id_images.image_2,
-            },
-            'price': favorite.id_room.price,
-            'nearest_places': favorite.id_room.nearest_places,
-            'mts2': favorite.id_room.mts2,
-            'furniture': favorite.id_room.furniture,
-            'private_bath': favorite.id_room.private_bath,
-            'wifi': favorite.id_room.wifi,
-            'closet': favorite.id_room.closet,
-            'kitchen': favorite.id_room.kitchen,
-            'pet': favorite.id_room.pet,
-            'washing_machine': favorite.id_room.washing_machine,
-            'furnished': favorite.id_room.furnish,
-            'tv': favorite.id_room.tv,
-            'smoke': favorite.id_room.smoke,
-            'couple': favorite.id_room.couple,
-            'family_atmosphere': favorite.id_room.family_atmosphere,
-            'description': favorite.id_room.description,
-            'available': favorite.id_room.available,
-        } 
-        data.append(aux)
-    return Response(data)
+class FavoritesDetail(APIView):
+    def get(self, request, id):
+        favorites = Favorites.objects.all()
+        #print(favorites[0])
+        favorites = favorites.filter(id_user=id)
+        print(favorites)   
+        print('Existe favoritos : {exists}'.format(exists=favorites.exists()))
+        if(favorites.exists() == False):
+            error = {
+                'status': 204,
+                'message': 'El usuario no tiene favoritos.'
+            }
+            return Response(error)
+        data = []
+        for favorite in favorites:
+            aux = {
+                #'oa': str(favorite)
+                'id': favorite.id_room.id,  
+                'created': str(favorite.id_room.created_date),
+                'id_user': {
+                    'name': favorite.id_room.id_user.name,
+                    'last_name': favorite.id_room.id_user.lastname,
+                    'phone': favorite.id_room.id_user.phone,
+                    'email': favorite.id_room.id_user.email,
+                },
+                #'picture': str(favorite.id_room.picture),
+                'pictures': {
+                    'image_1': favorite.id_room.id_images.image_1,
+                    'image_2': favorite.id_room.id_images.image_2,
+                },
+                'price': favorite.id_room.price,
+                'nearest_places': favorite.id_room.nearest_places,
+                'mts2': favorite.id_room.mts2,
+                'furniture': favorite.id_room.furniture,
+                'private_bath': favorite.id_room.private_bath,
+                'wifi': favorite.id_room.wifi,
+                'closet': favorite.id_room.closet,
+                'kitchen': favorite.id_room.kitchen,
+                'pet': favorite.id_room.pet,
+                'washing_machine': favorite.id_room.washing_machine,
+                'furnished': favorite.id_room.furnish,
+                'tv': favorite.id_room.tv,
+                'smoke': favorite.id_room.smoke,
+                'couple': favorite.id_room.couple,
+                'family_atmosphere': favorite.id_room.family_atmosphere,
+                'description': favorite.id_room.description,
+                'available': favorite.id_room.available,
+            } 
+            data.append(aux)
+        return Response(data)
+    
