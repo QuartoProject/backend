@@ -139,7 +139,7 @@ class FavoritesDetail(APIView):
         favorites = Favorites.objects.all()
         #print(favorites[0])
         favorites = favorites.filter(id_user=id)
-        print(favorites)   
+        #print(favorites)   
         print('Existe favoritos : {exists}'.format(exists=favorites.exists()))
         if(favorites.exists() == False):
             error = {
