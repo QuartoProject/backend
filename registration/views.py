@@ -1,12 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer, LoginSerializer
 from django.contrib.auth import login
-from rest_framework import permissions
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
-from quarto.models import User
+from quarto.models import User, Room
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
@@ -15,28 +13,29 @@ Register API
 """
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
-
+    model = User
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context()).data,"token": AuthToken.objects.create(user)[1]})
-
-
+        "user": UserSerializer(user, context=self.get_serializer_context()).data})
 
 """
 Login
 """
-class LoginAPI(KnoxLoginView):
-    permission_classes = (permissions.AllowAny,)
+class LoginAPI(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+    model = User
 
-    def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
+        user = serializer.validated_data
+        _, token = AuthToken.objects.create(user)
+        return Response({
+            "User": UserSerializer(user, context=self.get_serializer_context()).data})
 
 
 """
