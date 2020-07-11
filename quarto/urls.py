@@ -19,6 +19,7 @@ urlpatterns = [
     path('room_detail/<int:id>/', RoomDetail.as_view()),
 
     # Favorites 
+    path('favorites/<int:id_user>,<int:id_room>/', FavoritesDetail.as_view()),
     path('favorites/<int:id>/', FavoritesDetail.as_view()),
 ]
 
