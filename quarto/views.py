@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from .models import User, Room , Favorites
-from .serializers import UserSerializer, RoomSerializer
+from .serializers import UserSerializer, RoomSerializer, FavoritesSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -137,9 +137,7 @@ Favorites
 class FavoritesDetail(APIView):
     def get(self, request, id):
         favorites = Favorites.objects.all()
-        #print(favorites[0])
-        favorites = favorites.filter(id_user=id)
-        #print(favorites)   
+        favorites = favorites.filter(id_user=id)  
         print('Existe favoritos : {exists}'.format(exists=favorites.exists()))
         if(favorites.exists() == False):
             error = {
@@ -184,4 +182,12 @@ class FavoritesDetail(APIView):
             } 
             data.append(aux)
         return Response(data)
+
     
+    def post(self, request, id_user, id_room):
+        user = User.objects.get(id=id_user)
+        room = Room.objects.get(id=id_room)
+        favorite = Favorites(id_user=user,id_room=room)
+        favorite.save()
+        
+        return Response(status=status.HTTP_201_CREATED)
