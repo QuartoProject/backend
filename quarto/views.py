@@ -148,7 +148,6 @@ class FavoritesDetail(APIView):
         data = []
         for favorite in favorites:
             aux = {
-                #'oa': str(favorite)
                 'id': favorite.id_room.id,  
                 'created': str(favorite.id_room.created_date),
                 'id_user': {
@@ -156,11 +155,16 @@ class FavoritesDetail(APIView):
                     'last_name': favorite.id_room.id_user.lastname,
                     'phone': favorite.id_room.id_user.phone,
                     'email': favorite.id_room.id_user.email,
+                    "location": user.location,
+                    "description": user.description,
+                    "phone": user.phone,
                 },
-                #'picture': str(favorite.id_room.picture),
                 'pictures': {
-                    'image_1': favorite.id_room.id_images.image_1,
-                    'image_2': favorite.id_room.id_images.image_2,
+                    'image_1': user.id_room.id_images.image_1,
+                    'image_2': user.id_room.id_images.image_2,
+                    'image_3': user.id_room.id_images.image_3,
+                    'image_4': user.id_room.id_images.image_4,
+                    'image_5': user.id_room.id_images.image_5,
                 },
                 'price': favorite.id_room.price,
                 'nearest_places': favorite.id_room.nearest_places,
@@ -191,3 +195,61 @@ class FavoritesDetail(APIView):
         favorite.save()
         
         return Response(status=status.HTTP_201_CREATED)
+
+
+"""
+Search
+"""
+class Search(APIView):
+    def get(self, request, location):
+        users = User.objects.all()
+        users = users.filter(location=location)
+        print('Existe locación : {exists}'.format(exists=users.exists()))
+        if(users.exists() == False):
+            error = {
+                'status': 204,
+                'message': 'La locación no se encuentra en nuestra base de datos.'
+            }
+            return Response(error)
+        data = []
+        for user in users:
+            room = Room.objects.get(id_user=user.id)
+            aux = {
+                'id': room.id,  
+                'created': str(room.created_date),
+                'id_user': {
+                    'name': user.name,
+                    'last_name': user.lastname,
+                    'phone': user.phone,
+                    'email': user.email,
+                    "location": user.location,
+                    "description": user.description,
+                    "phone": user.phone,
+                },
+                'pictures': {
+                    'image_1': room.id_images.image_1,
+                    'image_2': room.id_images.image_2,
+                    'image_3': room.id_images.image_3,
+                    'image_4': room.id_images.image_4,
+                    'image_5': room.id_images.image_5,
+                },
+                'price': room.price,
+                'nearest_places': room.nearest_places,
+                'mts2': room.mts2,
+                'furniture': room.furniture,
+                'private_bath': room.private_bath,
+                'wifi': room.wifi,
+                'closet': room.closet,
+                'kitchen': room.kitchen,
+                'pet': room.pet,
+                'washing_machine': room.washing_machine,
+                'furnished': room.furnish,
+                'tv': room.tv,
+                'smoke': room.smoke,
+                'couple': room.couple,
+                'family_atmosphere': room.family_atmosphere,
+                'description': room.description,
+                'available': room.available,
+            } 
+            data.append(aux)
+        return Response(data)
