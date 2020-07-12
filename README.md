@@ -55,11 +55,11 @@ Of course, you can modify and bring new features to this project
 *Go to `url`*
 
 ## BackEnd Developers
-**Anthony Luque**
+**Anthony Luque**,
 **Jorge Arturo Salgado Ordoñez**
 
 ## FrontEnd Developers
-**Miguel Martelo**
-**Beto**
+**Miguel Martelo**,
+**Beto Toro**,
 **Mario A. Crespo Reyes**
 
