@@ -203,7 +203,7 @@ Search
 class Search(APIView):
     def get(self, request, location):
         users = User.objects.all()
-        users = users.filter(location=location.capitalize())
+        users = users.filter(location=location.lower().capitalize())
         print('Existe locación : {exists}'.format(exists=users.exists()))
         if(users.exists() == False):
             error = {
