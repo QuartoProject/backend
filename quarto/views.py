@@ -226,7 +226,7 @@ class Search(APIView):
                     "description": user.description,
                     "phone": user.phone,
                 },
-                'pictures': {
+                'id_images': {
                     'image_1': room.id_images.image_1,
                     'image_2': room.id_images.image_2,
                     'image_3': room.id_images.image_3,
