@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UserAPIView, UserDetail, UserViewSet, RoomAPIView, RoomDetail, RoomViewSet, FavoritesDetail
+from .views import UserAPIView, UserDetail, UserViewSet, RoomAPIView, RoomDetail, RoomViewSet, FavoritesDetail, Search
 from rest_framework.routers import DefaultRouter
 
 
@@ -21,6 +21,9 @@ urlpatterns = [
     # Favorites 
     path('favorites/<int:id_user>,<int:id_room>/', FavoritesDetail.as_view()),
     path('favorites/<int:id>/', FavoritesDetail.as_view()),
+
+    # Search
+    path('search/<str:location>/', Search.as_view()),
 ]
 
 
