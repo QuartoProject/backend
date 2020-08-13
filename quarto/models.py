@@ -1,11 +1,7 @@
 from django.db import models
-class User(models.Model):
-    id = models.AutoField(primary_key = True)
-    lastname = models.CharField(max_length=120, blank=False)
-    name= models.CharField(max_length=100, blank=False)
-    username = models.CharField(max_length=100, blank=False)
-    password = models.CharField(max_length=20, blank=False)
-    email = models.EmailField(max_length=200, unique=True)
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
     anfitrion = models.BooleanField(default=False)
     location = models.CharField(max_length=120, blank=False, default='bogota')
     description = models.TextField(blank=True)
@@ -13,17 +9,19 @@ class User(models.Model):
     active = models.BooleanField(default=True)
     favorite_rooms = models.ForeignKey('Favorites', on_delete=models.CASCADE, blank=True, null=True)
     picture = models.ImageField('profile picture', upload_to='users/pitures/',default='/media/rooms/pictures/user_profile.png',blank=True,null=True)
-    def __str__(self):
-        return '{_id} {_name} {_lastname} active: {_active} email: {_email} anfitrion: {_anfitrion} '.format(
-            _id=self.id,
-            _name=self.name,
-            _lastname=self.lastname,
-            _active=self.active,
-            _email=self.email,
-            _anfitrion=self.anfitrion,
-        )
+    ##Causa conflicto, pide que el campo name no esta
+    # def __str__(self):
+    #     return '{_id} {_name} {_lastname} active: {_active} email: {_email} anfitrion: {_anfitrion} '.format(
+    #         _id=self.id,
+    #         _name=self.name,
+    #         _lastname=self.lastname,
+    #         _active=self.active,
+    #         _email=self.email,
+    #         _anfitrion=self.anfitrion,
+    #     )
+
+
 class Room(models.Model):
-    id = models.AutoField(primary_key = True)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(blank=True, default=999999)
@@ -51,22 +49,20 @@ class Room(models.Model):
             _id_user = self.id_user,
             _available = self.available,
         )
+
+
 class Images_Room(models.Model):
-    id = models.AutoField(primary_key = True)
-    image_1 = models.URLField(blank=False)
-    image_2 = models.URLField(blank=False)
-    image_3 = models.URLField(blank=True)
-    image_4 = models.URLField(blank=True)
-    image_5 = models.URLField(blank=True)
-    image_6 = models.URLField(blank=True)
-    image_7 = models.URLField(blank=True)
-    image_8 = models.URLField(blank=True)
+
+    image = models.URLField(blank=False)
+    #id_room = models.ForeignKey('Room', on_delete=models.CASCADE)
+
     def __str__(self):
         return 'id: {_id}'.format(
             _id = self.id,
         )
+
+
 class Favorites(models.Model):
-    id = models.AutoField(primary_key = True)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_room = models.ForeignKey('Room', on_delete=models.CASCADE)
     def __str__(self):
