@@ -1,30 +1,45 @@
+"""Api models."""
+
+# Django modules
 from django.db import models
-class User(models.Model):
-    id = models.AutoField(primary_key = True)
-    lastname = models.CharField(max_length=120, blank=False)
-    name= models.CharField(max_length=100, blank=False)
-    username = models.CharField(max_length=100, blank=False)
-    password = models.CharField(max_length=20, blank=False)
-    email = models.EmailField(max_length=200, unique=True)
-    anfitrion = models.BooleanField(default=False)
+from django.contrib.auth.models import AbstractUser
+# ugettext_lazy is a translation hook. Good practices
+from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+
+class User(AbstractUser):
+    username = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(_('email address'), unique=True)
+    
+    USERNAME_FIELD = 'email'
+    """REQUIRED_FIELDS array specified the fields that are required by the
+    createsuperuser command.
+    The username has to be in that list, because otherwise Django complains
+    when creating super users.
+    """
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    
+    def __str__(self):
+        return "{}".format(self.email)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE,
+                                related_name='profile')
     location = models.CharField(max_length=120, blank=False, default='bogota')
     description = models.TextField(blank=True)
     phone = models.PositiveIntegerField(blank=True, default=1112223344)
     active = models.BooleanField(default=True)
     favorite_rooms = models.ForeignKey('Favorites', on_delete=models.CASCADE, blank=True, null=True)
     picture = models.ImageField('profile picture', upload_to='users/pitures/',default='/media/rooms/pictures/user_profile.png',blank=True,null=True)
+    
     def __str__(self):
-        return '{_id} {_name} {_lastname} active: {_active} email: {_email} anfitrion: {_anfitrion} '.format(
-            _id=self.id,
-            _name=self.name,
-            _lastname=self.lastname,
-            _active=self.active,
-            _email=self.email,
-            _anfitrion=self.anfitrion,
-        )
+        return "{}".format(self.user)
+
+
 class Room(models.Model):
-    id = models.AutoField(primary_key = True)
-    id_user = models.ForeignKey('User', on_delete=models.CASCADE)
+    id_user = models.ForeignKey('User', null=True, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     price = models.IntegerField(blank=True, default=999999)
     nearest_places = models.CharField(max_length=120)
@@ -43,7 +58,7 @@ class Room(models.Model):
     family_atmosphere = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     available = models.BooleanField(default=True)
-    id_images = models.ForeignKey('Images_Room', on_delete=models.CASCADE)
+    id_images = models.ForeignKey('Images_Room', null=True, on_delete=models.CASCADE)
     #picture = models.ImageField('room pictures',upload_to='media/rooms/pictures',default='/media/rooms/pictures/photo.png',blank=True,null=True)
     def __str__(self):
         return 'id: {_id} id_user: {_id_user} available: {_available}'.format(
@@ -51,22 +66,20 @@ class Room(models.Model):
             _id_user = self.id_user,
             _available = self.available,
         )
+
+
 class Images_Room(models.Model):
-    id = models.AutoField(primary_key = True)
-    image_1 = models.URLField(blank=False)
-    image_2 = models.URLField(blank=False)
-    image_3 = models.URLField(blank=True)
-    image_4 = models.URLField(blank=True)
-    image_5 = models.URLField(blank=True)
-    image_6 = models.URLField(blank=True)
-    image_7 = models.URLField(blank=True)
-    image_8 = models.URLField(blank=True)
+
+    image = models.URLField(blank=False)
+    #id_room = models.ForeignKey('Room', on_delete=models.CASCADE)
+
     def __str__(self):
         return 'id: {_id}'.format(
             _id = self.id,
         )
+
+
 class Favorites(models.Model):
-    id = models.AutoField(primary_key = True)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_room = models.ForeignKey('Room', on_delete=models.CASCADE)
     def __str__(self):
